@@ -1,0 +1,17 @@
+# Tool Registry — Single Source of Truth
+# Each tool entry:
+# - name: unique-id
+#   category: llms|ops|stt|tts|vision|web|data|io|...
+#   args_schema: {}          # optional JSON Schema-style summary
+#   side_effects: []         # e.g., ["fs:03-outputs/<tool>/..."]
+#   timeout_s: 600
+
+tools:
+  - name: youtube_downloader
+    description: Download YouTube videos and subtitles using yt-dlp.
+    path: media/youtube_downloader/youtube_downloader.py
+    category: media
+    arguments:
+      - name: url
+        description: The YouTube video URL.
+        required: true

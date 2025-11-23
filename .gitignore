@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+.DS_Store
+*.mp3
+*.mp4
+*.mov
+*.webm
+*.wav
+*.m4a
+*.ogg
+*.flac
+02-inputs/*
+!02-inputs/.gitkeep
+!02-inputs/.DS_Store
+03-outputs/*
+!03-outputs/README.md
+!03-outputs/.gitkeep
