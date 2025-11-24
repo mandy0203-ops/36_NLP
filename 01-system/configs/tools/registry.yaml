@@ -15,3 +15,37 @@ tools:
       - name: url
         description: The YouTube video URL.
         required: true
+  
+  - name: audio_transcribe
+    description: 專業語音轉錄工具，支援雙 STT 引擎、自訂詞典、智能格式化
+    path: 01-system/tools/stt/audio_transcribe/transcribe.py
+    category: stt
+    version: "1.0.0"
+    arguments:
+      - name: input
+        description: 輸入音檔路徑
+        required: true
+      - name: engine
+        description: STT 引擎 (elevenlabs 或 groq)
+        required: false
+      - name: output-name
+        description: 自訂輸出資料夾名稱
+        required: false
+
+  - name: youtube_to_subtitle
+    description: YouTube 轉字幕一鍵工具（下載 + 轉錄）
+    path: scripts/youtube_to_subtitle.py
+    category: stt
+    version: "1.0.0"
+    arguments:
+      - name: url
+        description: YouTube 影片網址
+        required: true
+      - name: engine
+        description: STT 引擎 (elevenlabs 或 groq)
+        required: false
+      - name: output-name
+        description: 自訂輸出資料夾名稱
+        required: false
+
+

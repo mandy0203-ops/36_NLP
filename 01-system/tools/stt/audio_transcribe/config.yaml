@@ -1,0 +1,40 @@
+# 互動模式
+interaction_mode: "ask"  # 每次詢問引擎選擇
+
+# 預設引擎（null = 每次詢問）
+default_engine: null
+
+# 輸出設定
+output:
+  base_dir: "03-outputs/audio_transcribe"
+  folder_naming: "filename_timestamp"  # filename_timestamp | filename | custom
+  audio_handling: "link"  # copy | move | link（link = 不複製，只記錄路徑）
+
+# 引擎設定
+engines:
+  elevenlabs:
+    model: "scribe-v1"
+    monthly_quota: 150  # 分鐘
+    
+  groq:
+    model: "whisper-large-v3"
+    hourly_quota: 120  # 分鐘
+    max_file_size: 25  # MB
+    chunk_duration: 600  # 秒（10 分鐘）
+
+# 壓縮設定
+compression:
+  small_file:  # < 20MB
+    sample_rate: 16000
+    channels: 1
+    bitrate: "64k"
+  
+  large_file:  # >= 20MB
+    sample_rate: 8000
+    channels: 1
+    bitrate: "24k"
+
+# 工作流程
+workflow:
+  skip_confirmation: false  # true = 跳過階段 1 確認
+  auto_format: true  # true = 自動格式化

@@ -65,30 +65,133 @@ def generate_srt(segments):
         srt_content += f"{i}\n{start} --> {end}\n{text}\n\n"
     return srt_content
 
+def get_duration(file_path):
+    """Gets audio duration in seconds using ffprobe."""
+    cmd = [
+        "ffprobe", "-v", "error", "-show_entries", "format=duration",
+        "-of", "default=noprint_wrappers=1:nokey=1", file_path
+    ]
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return float(result.stdout.strip())
+    except Exception as e:
+        print(f"Error getting duration: {e}")
+        return 0
+
+def split_audio(input_path, segment_time=600):
+    """Splits audio into chunks using ffmpeg."""
+    base, ext = os.path.splitext(input_path)
+    output_pattern = f"{base}_part%03d{ext}"
+    
+    print(f"Splitting {input_path} into {segment_time}s chunks...")
+    
+    cmd = [
+        "ffmpeg", "-y", "-i", input_path,
+        "-f", "segment", "-segment_time", str(segment_time),
+        "-c", "copy", output_pattern
+    ]
+    
+    try:
+        subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return sorted(glob.glob(f"{base}_part*{ext}"))
+    except subprocess.CalledProcessError as e:
+        print(f"Error splitting audio: {e}")
+        sys.exit(1)
+
 def transcribe_file(client, audio_path):
-    """Transcribes a single audio file."""
+    """Transcribes a single audio file, handling large files by splitting."""
     compressed_path = compress_audio(audio_path)
     
-    print(f"Transcribing {audio_path}...")
-    try:
-        with open(compressed_path, "rb") as file:
-            # Request verbose_json to get both text and segments
-            transcription = client.audio.transcriptions.create(
-                file=(os.path.basename(compressed_path), file.read()),
-                model="whisper-large-v3",
-                response_format="verbose_json",
-                timestamp_granularities=["segment"] # Required for segments
-            )
+    # Check file size (Groq limit is ~25MB)
+    file_size_mb = os.path.getsize(compressed_path) / (1024 * 1024)
+    
+    if file_size_mb < 24:
+        # Process normally
+        print(f"Transcribing {audio_path} ({file_size_mb:.2f} MB)...")
+        try:
+            with open(compressed_path, "rb") as file:
+                transcription = client.audio.transcriptions.create(
+                    file=(os.path.basename(compressed_path), file.read()),
+                    model="whisper-large-v3",
+                    prompt="繁體中文",
+                    response_format="verbose_json",
+                    timestamp_granularities=["segment"]
+                )
+            os.remove(compressed_path)
+            return transcription
+        except Exception as e:
+            print(f"Error transcribing file: {e}")
+            if os.path.exists(compressed_path):
+                os.remove(compressed_path)
+            sys.exit(1)
+    
+    else:
+        # Split and process
+        print(f"File too large ({file_size_mb:.2f} MB). Splitting...")
+        chunks = split_audio(compressed_path, segment_time=600) # 10 min chunks
         
-        # Cleanup compressed file
+        full_text = ""
+        all_segments = []
+        time_offset = 0.0
+        
+        for chunk in chunks:
+            print(f"Transcribing chunk {chunk}...")
+            
+            max_retries = 10
+            for attempt in range(max_retries):
+                try:
+                    with open(chunk, "rb") as file:
+                        transcription = client.audio.transcriptions.create(
+                            file=(os.path.basename(chunk), file.read()),
+                            model="whisper-large-v3",
+                            prompt="繁體中文",
+                            response_format="verbose_json",
+                            timestamp_granularities=["segment"]
+                        )
+                    break # Success, exit retry loop
+                except Exception as e:
+                    if "429" in str(e):
+                        wait_time = 60 * (attempt + 1)
+                        print(f"Rate limit hit (429). Waiting {wait_time}s before retry {attempt+1}/{max_retries}...")
+                        import time
+                        time.sleep(wait_time)
+                    else:
+                        print(f"Error transcribing chunk {chunk}: {e}")
+                        # Cleanup remaining chunks
+                        for c in chunks:
+                            if os.path.exists(c):
+                                os.remove(c)
+                        if os.path.exists(compressed_path):
+                            os.remove(compressed_path)
+                        sys.exit(1)
+            else:
+                # Failed after retries
+                print(f"Failed to transcribe chunk {chunk} after {max_retries} retries.")
+                sys.exit(1)
+                
+            full_text += transcription.text + " "
+            
+            # Adjust timestamps
+            for segment in transcription.segments:
+                segment['start'] += time_offset
+                segment['end'] += time_offset
+                all_segments.append(segment)
+            
+            # Update offset
+            duration = get_duration(chunk)
+            time_offset += duration
+            
+            os.remove(chunk)
+        
         os.remove(compressed_path)
         
-        return transcription
-    except Exception as e:
-        print(f"Error transcribing file: {e}")
-        if os.path.exists(compressed_path):
-            os.remove(compressed_path)
-        sys.exit(1)
+        # Create a mock object to match the expected return structure
+        class TranscriptionResult:
+            def __init__(self, text, segments):
+                self.text = text
+                self.segments = segments
+        
+        return TranscriptionResult(full_text.strip(), all_segments)
 
 def save_file(content, path):
     """Saves content to a file."""

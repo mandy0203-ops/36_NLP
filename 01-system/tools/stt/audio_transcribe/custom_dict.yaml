@@ -1,0 +1,28 @@
+# 自訂詞典 - 記錄您的慣用詞彙
+# 格式：wrong (錯誤寫法列表) -> correct (正確寫法)
+
+replacements:
+  # === 人名範例 ===
+  # - wrong: ["艾瑞克", "艾力克", "Eric"]
+  #   correct: "艾瑞克·霍夫曼"
+  
+  # === 節目名稱範例 ===
+  - wrong: ["人生解構", "人生解扣"]
+    correct: "人生解扣方程式"
+  
+  # === 專有名詞範例 ===
+  - wrong: ["GPT", "G P T", "吉皮提"]
+    correct: "ChatGPT"
+  
+  - wrong: ["AI", "A I", "A.I."]
+    correct: "AI"
+
+# === 使用說明 ===
+# 1. 手動新增：直接編輯此檔案
+# 2. 指令新增：transcribe --add-word "錯誤" "正確"
+# 3. 學習模式：transcribe --learn --original "原始.srt" --corrected "校正.srt"
+#
+# 提示：
+# - wrong 可以是多個變體
+# - correct 必須是單一正確寫法
+# - 支援中英文混合

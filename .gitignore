@@ -15,3 +15,20 @@ __pycache__/
 03-outputs/*
 !03-outputs/README.md
 !03-outputs/.gitkeep
+01-system/configs/apis/API-Keys.md
+
+# 同步排除項目
+.venv/
+venv/
+03-outputs/
+*.mp3
+*.MP4
+*.mp4
+*.mov
+*.MOV
+__pycache__/
+*.pyc
+.DS_Store
+
+# API Keys 保持本地
+01-system/configs/apis/API-Keys.md

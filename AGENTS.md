@@ -16,6 +16,8 @@
 - `registry.yaml` is the authoritative source for tools; `docs/prompts/INDEX.md` is canonical for curated prompts.
 - User-facing docs must remain in **Traditional Chinese（繁體中文）**.
 - **Communication Language**: Always use **Traditional Chinese (繁體中文)** for all user interactions, explanations, status updates, and error reporting. Never use English for conversation.
+- **Subtitles**: All generated Chinese subtitles must be in **Traditional Chinese (繁體中文)**.
+- **Video Downloads**: Default to 1080p quality unless user explicitly requests higher resolution (e.g., 4K, 8K).
 
 ## Startup Checklist (Every Session)
 1. Read `STATE.md` for the latest scaffold audit and standing next steps.
