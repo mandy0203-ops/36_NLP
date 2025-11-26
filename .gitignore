@@ -15,12 +15,14 @@ __pycache__/
 03-outputs/*
 !03-outputs/README.md
 !03-outputs/.gitkeep
+!03-outputs/course_ai_agent_toolbox/
+!03-outputs/銷售頁面專案/
 01-system/configs/apis/API-Keys.md
 
 # 同步排除項目
 .venv/
 venv/
-03-outputs/
+
 *.mp3
 *.MP4
 *.mp4

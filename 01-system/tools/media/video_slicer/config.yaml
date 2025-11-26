@@ -1,0 +1,16 @@
+llm:
+  provider: "gemini"
+  model: "gemini-2.0-flash"
+
+transcription:
+  engine: "groq" # or "groq"
+  language: "zh"
+
+clips:
+  min_topic_duration: 30  # Minimum duration to avoid very short fragments (seconds)
+  count: 8                # Number of topic segments to extract (increased for more coverage)
+  padding: 5              # seconds to add before/after clip
+
+output:
+  format: "mp4"
+  filename_pattern: "{original_name}_highlight_{index:02d}_{topic}.mp4"

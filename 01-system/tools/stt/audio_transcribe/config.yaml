@@ -6,7 +6,7 @@ default_engine: null
 
 # 輸出設定
 output:
-  base_dir: "03-outputs/audio_transcribe"
+  base_dir: "03-outputs/轉錄檔案"
   folder_naming: "filename_timestamp"  # filename_timestamp | filename | custom
   audio_handling: "link"  # copy | move | link（link = 不複製，只記錄路徑）
 

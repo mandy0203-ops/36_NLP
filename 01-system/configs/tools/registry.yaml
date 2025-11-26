@@ -2,6 +2,9 @@
 # Each tool entry:
 # - name: unique-id
 #   category: llms|ops|stt|tts|vision|web|data|io|...
+#   path: relative/path/from/root
+#   version: semver
+#   envs: []                 # Required environment variables
 #   args_schema: {}          # optional JSON Schema-style summary
 #   side_effects: []         # e.g., ["fs:03-outputs/<tool>/..."]
 #   timeout_s: 600
@@ -9,8 +12,10 @@
 tools:
   - name: youtube_downloader
     description: Download YouTube videos and subtitles using yt-dlp.
-    path: media/youtube_downloader/youtube_downloader.py
+    path: 01-system/tools/media/youtube_downloader/youtube_downloader.py
     category: media
+    version: "1.0.0"
+    envs: []
     arguments:
       - name: url
         description: The YouTube video URL.
@@ -21,6 +26,9 @@ tools:
     path: 01-system/tools/stt/audio_transcribe/transcribe.py
     category: stt
     version: "1.0.0"
+    envs: 
+      - GROQ_API_KEY
+      - ELEVENLABS_API_KEY
     arguments:
       - name: input
         description: 輸入音檔路徑
@@ -37,6 +45,9 @@ tools:
     path: scripts/youtube_to_subtitle.py
     category: stt
     version: "1.0.0"
+    envs:
+      - GROQ_API_KEY
+      - ELEVENLABS_API_KEY
     arguments:
       - name: url
         description: YouTube 影片網址

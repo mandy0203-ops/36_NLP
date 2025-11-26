@@ -1,0 +1,1381 @@
+<style>
+    /* =========================================
+       1. 核心變數設定 (Style Variables)
+       ========================================= */
+    :root {
+        --bg-body: #F9FAFB;
+        /* 整體背景：極淺灰 */
+        --bg-white: #FFFFFF;
+
+        --text-main: #2C3333;
+        /* 主要文字 */
+        --text-sub: #525E59;
+        /* 次要文字 */
+        --text-light: #9CA3AF;
+
+        --brand-primary: #1F4D36;
+        /* 品牌主色：深森林綠 */
+        --brand-dark: #143324;
+        --brand-light: #E8F0EB;
+
+        --accent-gold: #C5A059;
+        /* 金色：用於強調數字 */
+        --accent-red: #B91C1C;
+        /* 紅色：用於急迫性標籤 */
+
+        --font-sans: "Noto Sans TC", sans-serif;
+        --font-serif: "Noto Serif TC", serif;
+
+        --container-width: 1000px;
+        --shadow-soft: 0 10px 30px -5px rgba(31, 77, 54, 0.06);
+        --shadow-hover: 0 20px 40px -5px rgba(31, 77, 54, 0.12);
+    }
+
+    /* 全局重置 */
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        /* 在 systeme.io 內應將此樣式移除或改為 div，但為方便預覽暫時保留 */
+        font-family: var(--font-sans);
+        line-height: 1.7;
+        color: var(--text-main);
+        background-color: var(--bg-body);
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        transition: 0.3s;
+    }
+
+    img {
+        max-width: 100%;
+        display: block;
+        height: auto;
+    }
+
+    /* =========================================
+       2. 排版與字體 (Typography & Layout)
+       ========================================= */
+    .container {
+        width: 100%;
+        max-width: var(--container-width);
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: var(--font-serif);
+        color: var(--brand-primary);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: clamp(2.5rem, 5vw, 3.8rem);
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+
+    h2 {
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        margin-bottom: 3rem;
+        position: relative;
+    }
+
+    h2::after {
+        content: "";
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: var(--accent-gold);
+        margin: 20px auto 0;
+        opacity: 0.5;
+    }
+
+    p {
+        margin-bottom: 1rem;
+        color: var(--text-sub);
+    }
+
+    .section-desc {
+        text-align: center;
+        max-width: 760px;
+        margin: 0 auto 50px auto;
+        font-size: 1.1rem;
+        color: var(--text-sub);
+    }
+
+    section {
+        padding: 100px 0;
+    }
+
+    @media (max-width: 768px) {
+        section {
+            padding: 60px 0;
+        }
+
+        .mobile-break {
+            display: block;
+            height: 0;
+        }
+    }
+
+    /* 按鈕樣式 */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 40px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        color: #fff;
+        background: var(--brand-primary);
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(31, 77, 54, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background: var(--brand-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(31, 77, 54, 0.25);
+    }
+
+    .btn-pulse {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(31, 77, 54, 0.4);
+        }
+
+        70% {
+            box-shadow: 0 0 0 15px rgba(31, 77, 54, 0);
+        }
+
+        100% {
+            box-shadow: 0 0 0 0 rgba(31, 77, 54, 0);
+        }
+    }
+
+    /* =========================================
+       3. 各區塊樣式 (Section Styles)
+       ========================================= */
+
+    /* Hero Section */
+    .hero {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        text-align: center;
+        padding-top: 120px;
+    }
+
+    .hero-tag {
+        display: inline-block;
+        padding: 8px 24px;
+        background: var(--accent-red);
+        color: #fff;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        margin-bottom: 40px;
+        box-shadow: 0 4px 12px rgba(185, 28, 28, 0.25);
+    }
+
+    .hero .sub-head {
+        font-size: 1.25rem;
+        margin-bottom: 50px;
+        line-height: 1.8;
+        color: var(--text-sub);
+    }
+
+    /* 價格膠囊 */
+    .price-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        background: #fff;
+        border: 1px solid #E5E7EB;
+        padding: 12px 30px;
+        border-radius: 50px;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+    }
+
+    .price-badge {
+        background: var(--brand-light);
+        color: var(--brand-primary);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    /* Social Proof */
+    .social-proof {
+        background: #fff;
+        border-bottom: 1px solid #F3F4F6;
+        padding: 60px 0;
+    }
+
+    .stats-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 40px 80px;
+    }
+
+    .stat-num {
+        font-family: var(--font-serif);
+        font-size: 2.5rem;
+        color: var(--brand-primary);
+        font-weight: 700;
+        display: block;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+    }
+
+    /* Video & Testimonials */
+    .testimonial-section {
+        background-color: var(--bg-body);
+    }
+
+    .featured-review-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 50px;
+        border: 1px solid rgba(0, 0, 0, 0.02);
+    }
+
+    @media(min-width: 900px) {
+        .featured-review-card {
+            flex-direction: row;
+            align-items: stretch;
+        }
+    }
+
+    .review-video-col {
+        width: 100%;
+        position: relative;
+        background: #000;
+    }
+
+    @media(min-width: 900px) {
+        .review-video-col {
+            width: 50%;
+            flex-shrink: 0;
+        }
+    }
+
+    /* 縮圖連結樣式 */
+    .video-thumbnail-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+        position: relative;
+        background-color: #000;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    @media(min-width: 900px) {
+        .video-thumbnail-link {
+            min-height: auto;
+        }
+    }
+
+    .video-thumbnail-link img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.85;
+        transition: opacity 0.3s, transform 0.5s;
+    }
+
+    .video-thumbnail-link:hover img {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 64px;
+        height: 64px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--brand-primary);
+        font-size: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, background 0.3s;
+        z-index: 2;
+    }
+
+    .video-thumbnail-link:hover .play-button {
+        transform: translate(-50%, -50%) scale(1.15);
+        background: #fff;
+        color: var(--brand-dark);
+    }
+
+    .video-label {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        z-index: 2;
+    }
+
+    .review-content-col {
+        padding: 50px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* 文字見證 Grid */
+    .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+    }
+
+    .review-card {
+        background: #fff;
+        padding: 35px;
+        border-radius: 16px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid rgba(0, 0, 0, 0.02);
+        height: 100%;
+    }
+
+    .review-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+    }
+
+    .review-avatar {
+        width: 50px;
+        height: 50px;
+        background: var(--brand-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--brand-primary);
+        font-weight: 700;
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+    }
+
+    /* 學員反饋圖片牆 */
+    .chat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 60px;
+    }
+
+    .chat-img {
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.3s;
+        cursor: pointer;
+        border: 1px solid #eee;
+        background: #fff;
+        display: block;
+    }
+
+    .chat-img:hover {
+        transform: scale(1.02);
+        z-index: 10;
+        box-shadow: var(--shadow-hover);
+    }
+
+    /* Pain Points */
+    .pain-section {
+        background: #fff;
+    }
+
+    .pain-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+    }
+
+    .pain-card {
+        padding: 40px;
+        background: var(--bg-body);
+        border-radius: 16px;
+        transition: transform 0.3s;
+    }
+
+    .pain-card:hover {
+        transform: translateY(-5px);
+        background: #fff;
+        box-shadow: var(--shadow-soft);
+    }
+
+    .pain-icon {
+        font-size: 2rem;
+        color: var(--accent-red);
+        margin-bottom: 20px;
+        display: block;
+        opacity: 0.8;
+        text-align: center;
+    }
+
+    /* Instructor */
+    .instructor-section {
+        background: #fff;
+    }
+
+    .instructor-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 60px;
+        align-items: center;
+    }
+
+    .instructor-img-container {
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        border-radius: 20px;
+        box-shadow: 20px 20px 0 var(--brand-light);
+        overflow: hidden;
+        background: #eee;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .instructor-img-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .instructor-bio {
+        flex: 1;
+    }
+
+    .bio-text {
+        white-space: pre-wrap;
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        line-height: 1.9;
+    }
+
+    @media(min-width: 900px) {
+        .instructor-wrapper {
+            flex-direction: row;
+        }
+
+        .instructor-img-container {
+            flex-shrink: 0;
+            margin-left: 20px;
+        }
+    }
+
+    /* Method Section */
+    .method-section {
+        background-color: var(--brand-primary);
+        color: #fff;
+    }
+
+    .method-section h2 {
+        color: #fff !important;
+    }
+
+    .method-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .method-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px 30px;
+        border-radius: 16px;
+    }
+
+    .method-card h3 {
+        color: var(--accent-gold);
+        text-align: left;
+        margin-bottom: 10px;
+        font-size: 1.4rem;
+    }
+
+    .method-subtitle {
+        display: block;
+        color: #fff;
+        opacity: 0.9;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .method-text {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    /* Preview Video Section */
+    .preview-section {
+        background-color: #F3F4F6;
+        text-align: center;
+    }
+
+    .preview-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .preview-video-box {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: var(--shadow-hover);
+        background: #000;
+    }
+
+    .preview-video-box img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.9;
+        transition: opacity 0.3s;
+    }
+
+    .preview-video-box:hover img {
+        opacity: 0.7;
+    }
+
+    .preview-play-btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background: var(--accent-red);
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        box-shadow: 0 0 0 10px rgba(185, 28, 28, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    /* Syllabus */
+    .syllabus-section {
+        background: #fff;
+    }
+
+    .syllabus-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .syllabus-item {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 50px;
+        align-items: flex-start;
+    }
+
+    .syllabus-num {
+        flex: 0 0 60px;
+        height: 60px;
+        border: 1px solid var(--brand-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--brand-primary);
+        font-family: var(--font-serif);
+        font-size: 1.2rem;
+        font-weight: 700;
+        background: #fff;
+    }
+
+    .syllabus-content h4 {
+        text-align: left;
+        margin-bottom: 10px;
+        color: var(--text-main);
+        font-size: 1.3rem;
+    }
+
+    /* Offer Section */
+    .offer-section {
+        background: var(--bg-body);
+        padding-bottom: 120px;
+    }
+
+    .offer-card {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .value-stack {
+        background: var(--brand-light);
+        border-radius: 20px;
+        padding: 50px 40px;
+        text-align: left;
+        margin: 40px auto 60px auto;
+        max-width: 700px;
+    }
+
+    .stack-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px dashed rgba(31, 77, 54, 0.2);
+        font-size: 1.05rem;
+    }
+
+    .stack-item:last-child {
+        border-bottom: none;
+    }
+
+    .stack-icon {
+        color: var(--brand-primary);
+        margin-right: 10px;
+    }
+
+    .stack-price {
+        font-weight: 700;
+        color: var(--brand-primary);
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-light);
+        font-size: 0.85rem;
+    }
+
+    /* 動畫 */
+    .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+
+<div class="jackal-landing-wrapper">
+
+    <!-- Hero Section -->
+    <section class="hero reveal">
+        <div class="container">
+            <span class="hero-tag">🔥 早鳥優惠限時倒數中！</span>
+            <h1>打造 <span style="color: var(--accent-gold);">36°</span> 的關係</h1>
+            <p class="sub-head">
+                不靠硬碰硬，也能贏得人心，處好關係。<br>
+                看透對方意圖，讓你每句話都更有<strong style="color: var(--brand-primary);">份量</strong>。
+            </p>
+
+            <div class="price-pill">
+                <i class="fas fa-gem" style="color: var(--brand-primary);"></i>
+                <span style="color: var(--text-main); font-weight: 500;">
+                    實體課程原價 NT$ 21,580，早鳥限時<strong style="color: var(--accent-red);">省下 NT$ 3,780！</strong>
+                </span>
+                <div class="price-badge">Early Bird</div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <a href="#offer" class="btn btn-pulse">立即報名工作坊 <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <p style="text-align: center; margin-top: 30px; font-size: 0.9rem; color: #9CA3AF;">
+                往下滑動 · 查看學員真實影片與見證
+            </p>
+        </div>
+    </section>
+
+    <!-- Social Proof Stats -->
+    <div class="social-proof reveal">
+        <div class="container">
+            <h3
+                style="font-size: 1rem; color: var(--text-light); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 50px;">
+                已幫助超過 3,800+ 位學員改善關係
+            </h3>
+            <div class="stats-grid">
+                <div class="stat-item"><span class="stat-num">7+</span><span class="stat-label">學員遍佈國家</span></div>
+                <div class="stat-item"><span class="stat-num">2</span><span class="stat-label">NLP 國際證照</span></div>
+                <div class="stat-item"><span class="stat-num">3.8k</span><span class="stat-label">累計講座人次</span></div>
+                <div class="stat-item"><span class="stat-num">140k</span><span class="stat-label">全網粉絲追蹤</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonial-section reveal">
+        <div class="container">
+            <h2>學員真實見證</h2>
+            <p class="section-desc">聽聽他們上完課後最真實的感動與改變</p>
+
+            <!-- 1. 蘇仰志 (圖片外連) -->
+            <div class="featured-review-card reveal">
+                <div class="review-video-col">
+                    <a href="https://www.youtube.com/watch?v=eqJgOdASj3Y" target="_blank" class="video-thumbnail-link">
+                        <img src="https://img.youtube.com/vi/eqJgOdASj3Y/maxresdefault.jpg" alt="蘇仰志見證影片">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                        <div class="video-label">點擊觀看見證影片</div>
+                    </a>
+                </div>
+                <div class="review-content-col">
+                    <div style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 20px;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">S</div>
+                        <div>
+                            <h5 style="margin:0; font-size:1.1rem; color:var(--text-main); font-weight:700;">蘇仰志</h5>
+                            <span style="font-size:0.9rem; color:var(--text-light);">雜學校創辦人</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 1rem; color: var(--text-sub);">
+                        參加 Jackal
+                        的課程，收穫非常多；透過系統化的練習，我理解到夫妻、親子關係中有時需要第三方視角介入，才能真正解開長期的溝通僵局。在課堂中，我學到多種具體的溝通技巧和對話框架，能讓互動更順暢、情感更貼近。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. 余冠樓 & Mandy (圖片外連) -->
+            <div class="featured-review-card reveal">
+                <div class="review-video-col">
+                    <a href="https://www.youtube.com/watch?v=MAFFY-0IMhA" target="_blank" class="video-thumbnail-link">
+                        <img src="https://img.youtube.com/vi/MAFFY-0IMhA/maxresdefault.jpg" alt="余冠樓 & Mandy 見證影片">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                        <div class="video-label">點擊觀看見證影片</div>
+                    </a>
+                </div>
+                <div class="review-content-col">
+                    <div style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 20px;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">M</div>
+                        <div>
+                            <h5 style="margin:0; font-size:1.1rem; color:var(--text-main); font-weight:700;">余冠樓 & Mandy
+                            </h5>
+                            <span style="font-size:0.9rem; color:var(--text-light);">空間翻玩者</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 1rem; color: var(--text-sub);">
+                        非常推薦情侶一起來參加這堂課。透過第一天的課程，我們竟然解開了一年多前的小矛盾，雖然事件不大，卻在彼此心中留了一點疙瘩。課程系統化的引導，讓我們一步步提出關鍵問題，重新理解對方最底層的思考迴路，心結被真正化解。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. 黃敬淳 (圖片外連) -->
+            <div class="featured-review-card reveal">
+                <div class="review-video-col">
+                    <a href="https://www.youtube.com/watch?v=K8LCJEN0MoE" target="_blank" class="video-thumbnail-link">
+                        <img src="https://img.youtube.com/vi/K8LCJEN0MoE/maxresdefault.jpg" alt="黃敬淳見證影片">
+                        <div class="play-button"><i class="fas fa-play"></i></div>
+                        <div class="video-label">點擊觀看見證影片</div>
+                    </a>
+                </div>
+                <div class="review-content-col">
+                    <div style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 20px;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">H</div>
+                        <div>
+                            <h5 style="margin:0; font-size:1.1rem; color:var(--text-main); font-weight:700;">黃敬淳</h5>
+                            <span style="font-size:0.9rem; color:var(--text-light);">醫美護理師</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 1rem; color: var(--text-sub);">
+                        我本身是護理師，一直以為自己很會溝通，卻發現有時候的善意並未被感受，反而讓我很受傷、干擾心情。這堂課讓我理解真正的溝通方式，並學會如何調適情緒，避免自我內耗。
+                    </p>
+                </div>
+            </div>
+
+            <!-- 其他文字見證 -->
+            <div class="testimonial-grid">
+                <div class="review-card reveal">
+                    <div style="color: #E5E7EB; font-size: 3rem; line-height: 0.5;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">P</div>
+                        <div>
+                            <h5 style="font-weight:700; color:var(--text-main);">潘潘</h5>
+                            <span style="font-size:0.85rem; color:var(--text-light);">電商總監</span>
+                        </div>
+                    </div>
+                    <p>參加這堂課本來是想解決職場與同事的溝通問題。經由老師講解和同學討論練習，我學會看見每個人的正向意圖，不再自我內耗，溝通更順暢，心理狀態也獲得大幅提升。</p>
+                </div>
+
+                <div class="review-card reveal">
+                    <div style="color: #E5E7EB; font-size: 3rem; line-height: 0.5;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">Y</div>
+                        <div>
+                            <h5 style="font-weight:700; color:var(--text-main);">英洲</h5>
+                            <span style="font-size:0.85rem; color:var(--text-light);">資深技術經理</span>
+                        </div>
+                    </div>
+                    <p>原本報名參加這堂課程是想要增進自己的溝通能力，卻意外的在這裡得到了很多啟發。接下來會用比較正向的方式，對我的孩子、親人去做更好的互動。</p>
+                </div>
+
+                <div class="review-card reveal">
+                    <div style="color: #E5E7EB; font-size: 3rem; line-height: 0.5;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">S</div>
+                        <div>
+                            <h5 style="font-weight:700; color:var(--text-main);">舒婷</h5>
+                            <span style="font-size:0.85rem; color:var(--text-light);">專業美容師</span>
+                        </div>
+                    </div>
+                    <p>兩天的課程資訊量真的很大，很多的觀念和想法都有被打開，我覺得對我之後人生，不管在人際關係上面，還是夫妻相處上面都會有很大的幫助。</p>
+                </div>
+
+                <div class="review-card reveal">
+                    <div style="color: #E5E7EB; font-size: 3rem; line-height: 0.5;">“</div>
+                    <div class="review-header">
+                        <div class="review-avatar">L</div>
+                        <div>
+                            <h5 style="font-weight:700; color:var(--text-main);">Louis</h5>
+                            <span style="font-size:0.85rem; color:var(--text-light);">專案經理</span>
+                        </div>
+                    </div>
+                    <p>以前總覺得要「講贏」才算溝通，上完課才發現「聽懂」比「說服」更有力量。現在跟團隊溝通效率變高了，氣氛也變好了。</p>
+                </div>
+            </div>
+
+            <!-- 學員真實對話截圖牆 -->
+            <h3
+                style="margin-top: 80px; margin-bottom: 30px; font-size: 1.2rem; color: var(--text-sub); text-align: center;">
+                學員私訊好評不斷</h3>
+            <div class="chat-grid reveal">
+                <!-- 請將 src 替換為 systeme.io 提供的圖片絕對 URL -->
+                <img src="PLACEHOLDER_1_URL" alt="學員反饋1" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_2_URL" alt="學員反饋2" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_3_URL" alt="學員反饋3" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_4_URL" alt="學員反饋4" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_5_URL" alt="學員反饋5" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_6_URL" alt="學員反饋6" class="chat-img" onerror="this.alt='請替換 URL'">
+                <img src="PLACEHOLDER_8_URL" alt="學員反饋8" class="chat-img" onerror="this.alt='請替換 URL'">
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="#offer" class="btn">用溝通創造屬於你的影響圈 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pain Points -->
+    <section class="pain-section reveal">
+        <div class="container">
+            <h2>你經歷的難處與困境，我都懂……</h2>
+            <p class="section-desc">以下描述的，是不是你目前正在經歷，卻不知如何擺脫的惡性循環？</p>
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <i class="fas fa-heart-broken pain-icon"></i>
+                    <h3>價值觀碰撞，導致關係僵化</h3>
+                    <p>明明想好好溝通，卻因價值觀不同陷入無謂爭論，讓彼此的尊重和信任一點點流失，最後在人際或親密關係中漸行漸遠。</p>
+                </div>
+                <div class="pain-card">
+                    <i class="fas fa-battery-quarter pain-icon"></i>
+                    <h3>被情緒綁架內耗嚴重</h3>
+                    <p>很容易因別人的一句話或反應而悶在心裡好幾天，長期消耗內心能量，不僅影響工作效率，還一點一滴侵蝕著生活的幸福感。</p>
+                </div>
+                <div class="pain-card">
+                    <i class="fas fa-comment-slash pain-icon"></i>
+                    <h3>善意溝通卻總是被誤會</h3>
+                    <p>明明出於善意，卻常被誤解成強勢或指責，眼看重要的人漸漸疏離，也一步步失去他們曾經給予的支持與信任。</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="#offer" class="btn btn-pulse">🎉 立即卡位，告別內耗人生！ <i class="fas fa-hand-pointer"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructor Section -->
+    <section class="instructor-section reveal">
+        <div class="container">
+            <div class="instructor-wrapper">
+                <!-- 講師照片：請替換為 systeme.io 提供的 IMG_4308.jpg 絕對 URL -->
+                <div class="instructor-img-container">
+                    <img src="PLACEHOLDER_IMG_4308_URL" alt="Jackal 講師照片" onerror="this.alt='請替換為 systeme.io 圖片網址'">
+                </div>
+                <div class="instructor-bio">
+                    <h3>講師簡介：盧育明 - Jackal</h3>
+                    <div class="bio-text">Hi 我是 Jackal，來自 Taiwan Kaohsiung
+
+                        一位因 NLP 神經語言程式學而改變命運的人，外表冷靜內心住著熱血魂的教育工作者。
+
+                        我是在 2020 年在因緣際會之下接觸到 NLP
+                        這個領域，隨即修完兩張執行師證照後靠著大量的自學與實踐，大幅改善我的人際關係和心態，讓原本總是負面思維的我，能夠有很好的自我調控狀態的成果，不僅是跟家人的關係變得更緊密，在工作上的溝通也變得更加順暢。
+
+                        而在 2023 年，我開始將我所學運用在生活中的經驗，透過自媒體分享，短短兩年多，所有平台累計超過 14 萬+ 追蹤者，並且把 NLP
+                        技術簡化成每個人在日常生活中都可以輕鬆運用的方式，讓上過課的學員都能體會到原來平靜沒這麼難，處關係更是有方法有脈絡可依循的。</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Method Section -->
+    <section class="method-section reveal">
+        <div class="container">
+            <h2>核心方法論</h2>
+            <div class="method-grid">
+                <div class="method-card">
+                    <h3>01. DISC 精準識人術</h3>
+                    <span class="method-subtitle">快速判斷溝通對象怎麼說最有效</span>
+                    <p class="method-text">
+                        是不是曾跟另一半溝通時，明明出發點很好，卻被當成挑剔或指責？透過簡單的測驗與觀察「穿著」、「表情」、「行為模式」，快速辨別對方的行為特質，判斷該使用哪種語言，達到高效溝通。</p>
+                </div>
+                <div class="method-card">
+                    <h3>02. 正向意圖三維解析</h3>
+                    <span class="method-subtitle">看懂衝突背後的需求，輕鬆達成有效溝通</span>
+                    <p class="method-text">問題的核心不是對方故意挑釁，而是你們沒看見彼此「言語」、「行為」、「情緒」背後的正向意圖。系統化找出隱藏在溝通衝突背後的真正需求，促進彼此理解，消除戒備。
+                    </p>
+                </div>
+                <div class="method-card">
+                    <h3>03. 六層次破框思維</h3>
+                    <span class="method-subtitle">快速找到溝通卡點，創造雙贏對話</span>
+                    <p class="method-text">明明彼此都希望解決問題，但總是越講越僵？真正原因不在口才，而是你們對話的卡點「層級」出了問題。透過引導向上破框，找到能立即創造共識的關鍵切入點。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 課程試看影片 (Preview Video) -->
+    <section class="preview-section reveal">
+        <div class="container">
+            <h2>課程內容搶先看</h2>
+            <p class="section-desc">不確定上課風格？花 3 分鐘，體驗 Jackal 老師的教學現場</p>
+
+            <div class="preview-container">
+                <a href="https://youtu.be/VIsJDuUU3DA" target="_blank" style="display: block; text-decoration: none;">
+                    <div class="preview-video-box">
+                        <!-- YouTube 影片縮圖 -->
+                        <img src="https://img.youtube.com/vi/VIsJDuUU3DA/maxresdefault.jpg" alt="課程試看封面">
+                        <div class="preview-play-btn"><i class="fas fa-play"></i></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Syllabus Section -->
+    <section class="syllabus-section reveal">
+        <div class="container">
+            <h2>課程大綱</h2>
+            <div class="syllabus-container">
+                <div class="syllabus-item">
+                    <div class="syllabus-num">01</div>
+                    <div class="syllabus-content">
+                        <h4>破除溝通盲區</h4>
+                        <p>人跟人之間很多時候的爭吵，都是因為產生了誤會，而誤會產生的原因，卻只是一個簡單的思維習慣就可以破除。這一章，我們教你如何用一個簡單辨識想法及說話的二分法，學會之後不僅可以在生活中少掉
+                            90% 的誤會。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">02</div>
+                    <div class="syllabus-content">
+                        <h4>NLP 觀察技巧</h4>
+                        <p>語言之外，才是溝通真正開始的地方。你將學會用 NLP 的觀察技巧，看清每個對話中，語言與非語言裡的隱藏訊號，包括：說話的節奏、聲音音律變化、眼神的變化、肢體變化。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">03</div>
+                    <div class="syllabus-content">
+                        <h4>從屬等級概論、破框思維</h4>
+                        <p>這一章，我們將教你一套系統性的思維架構，幫助你從根本上辨識對話的卡點、不再重複無效的溝通輪迴而是引導對方能用更宏觀的角度，討論出彼此可接受的共識。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">04</div>
+                    <div class="syllabus-content">
+                        <h4>DISC 行為分析溝通應用</h4>
+                        <p>這章節，我們用 DISC 幫你重建「他是誰，我該怎麼說」的思維。你會根據對象調整語氣與策略，不再硬推自己的說話風格，在團隊、親密關係中更快建立信任。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">05</div>
+                    <div class="syllabus-content">
+                        <h4>價值觀解碼術</h4>
+                        <p>我們不談價值觀衝突，而是教你如何看懂、對準、並善用對方的價值觀排序，把原本的對立，轉化成「你們都想要的同一個目標」。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">06</div>
+                    <div class="syllabus-content">
+                        <h4>正向意圖多維分析</h4>
+                        <p>這章會幫你訓練一個新的思考方式：不再問「他為什麼這樣對我？」而是學會問「他這樣做，背後有哪些需求是我們可以協調的？」</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">07</div>
+                    <div class="syllabus-content">
+                        <h4>拆除語言中的地雷</h4>
+                        <p>這章我們會帶你深入 NLP 的語言結構與身份理論，從日常對話中辨識高風險語句、潛在踩雷點，並教你如何依據「不同身份」設計出讓人聽得進去的溝通語氣。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">08</div>
+                    <div class="syllabus-content">
+                        <h4>切換多重身份視角</h4>
+                        <p>在這一章，我們會教你具體的視角切換方法，讓你能在情緒升溫前，就能立即切換視角，看見對方的需求與整體情境。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">09</div>
+                    <div class="syllabus-content">
+                        <h4>制定合適的溝通目標</h4>
+                        <p>我們會教你運用三個簡單步驟：正面表述、可行性衡量、長期利益思維，讓你不再繞圈說話，而是明確聚焦目標，有效引導對方做出具體回應與行動。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">10</div>
+                    <div class="syllabus-content">
+                        <h4>建立親和感的實用技巧</h4>
+                        <p>這章重點是讓你在每一次對話中，都有能力打造出一種「安心而自在」的互動氛圍。不管對方是你不熟的同事、難搞的客戶，還是冷淡的伴侶 你都能用這套技術。</p>
+                    </div>
+                </div>
+                <div class="syllabus-item">
+                    <div class="syllabus-num">11</div>
+                    <div class="syllabus-content">
+                        <h4>提問及創造和諧對話演練</h4>
+                        <p>這一章，我們要交給你的，不只是一套可複製的和諧對話表達公式，更是幫你整合前 10 章重點的實用演練，讓你從「知道」變成「做得到」。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Section -->
+    <section class="audience-section" style="background: var(--bg-body);">
+        <div class="container">
+            <h2>誰適合這門課？</h2>
+            <div class="audience-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                <div class="audience-box"
+                    style="background: #fff; padding: 40px; border-radius: 20px; border: 1px solid #E5E7EB;">
+                    <h3 style="color: var(--brand-primary); font-size: 1.3rem;">特別推薦給這樣的你</h3>
+                    <ul class="audience-list" style="list-style: none; padding-left: 0;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-check"
+                                style="color:var(--brand-primary); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>中高階主管、企業主：</strong>需有效地傳達想法、處理工作團隊情緒、避免內部衝突。</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-check"
+                                style="color:var(--brand-primary); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>服務業或銷售人員：</strong>每日必須大量與人互動，需要更高的同理心技巧。</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-check"
+                                style="color:var(--brand-primary); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>教育工作者、諮詢顧問：</strong>高度仰賴與學生、客戶建立信任。</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-check"
+                                style="color:var(--brand-primary); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>人際溝通嚴重內耗者：</strong>經常因溝通不順而焦慮，過度自責。</li>
+                    </ul>
+                </div>
+                <div class="audience-box"
+                    style="background: #fff; padding: 40px; border-radius: 20px; border: 1px solid #E5E7EB;">
+                    <h3 style="color: var(--accent-red); font-size: 1.3rem;">誰「不適合」這堂課</h3>
+                    <ul class="audience-list" style="list-style: none; padding-left: 0;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-times"
+                                style="color:var(--accent-red); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>只想「套招」贏過別人：</strong>這不是話術速成班，不教你讓對方閉嘴。功利溝通只會讓關係更遠。</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 15px;"><i class="fas fa-times"
+                                style="color:var(--accent-red); position: absolute; left: 0; top: 5px;"></i>
+                            <strong>不想練習只想速成：</strong>這堂課要你先看懂人性底層邏輯，需要你願意投入練習。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section style="background: #fff;">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="text-center">常見問題 Q&A</h2>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    線上和實體課程有什麼差別？ <span style="color: var(--brand-primary);"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    實體課程與線上課程的內容大致相同，但有些演練比較適合在實體進行。而且實體課程中，學員會更即時提問、討論和彼此的分享，常常會激發更多延伸的解析與臨場示範，讓整體體驗更深入。如果你希望最完整的感受，會比較推薦參加實體課程。但若你在時間或交通上有考量，線上直播課程也是很好的選擇喔！
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    我上過類似的溝通課，但還是沒改變，這次真的會有效嗎？ <span style="color: var(--brand-primary);"><i
+                            class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    我們最大的不同，是強調落地實用的 NLP。有些傳統的 NLP
+                    教學過於理論化，你學了卻難以應用。我的方法聚焦於日常情境，透過「正向意圖解析法」和「從屬等級定位法」，讓你快速掌握核心技巧，真正落實在每天的人際互動中。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    如果我的家人或伴侶完全不配合、不接受我的新溝通模式，那我學了這些技巧還有意義嗎？ <span style="color: var(--brand-primary);"><i
+                            class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    溝通技巧首先是幫助自己，不是改變他人。你將學到如何改變你自己的溝通方式，進而影響關係互動的氣氛與品質。許多學員都曾反饋：「家人一開始沒改變，但自己改變後，關係反而變好了。」
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    你說課程很實用、好上手，但我口才本來就不好，現場的模擬練習會不會讓我覺得很尷尬或焦慮？ <span style="color: var(--brand-primary);"><i
+                            class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    課程的練習是高度支持性與安全的。我們的團隊會提供溫暖且有耐心的協助，確保每個學員都能在輕鬆、安全的氛圍中練習技巧，你絕對不會感到壓力或尷尬。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    學完這些理論之後，我要練多久才能真的變成習慣？日常真的可以隨時隨地用上嗎？ <span style="color: var(--brand-primary);"><i
+                            class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    課程強調即學即用，只要多練習，都是可以運用在溝通中。你會得到具體的溝通模板與技巧，每天任何人際互動場景中都能輕鬆運用。許多學員回饋，只要有意識使用，短短幾週內就會內化成自然的溝通模式。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    這個課程的學費不便宜，萬一我真的沒學到什麼或無法解決我的問題，有什麼後續的支援或補救方式嗎？ <span style="color: var(--brand-primary);"><i
+                            class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    課程結束後，您將持續享有線上 QA 研討會與問題諮詢機會，協助釐清卡關點、加深實作應用，確保每位學員都能真正吸收並運用所學。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    課程時間？ <span style="color: var(--brand-primary);"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    實體課程：09:00-17:00 (每日約 8 小時，含午餐休息 1 小時)<br>線上課程：09:00-16:00 (每日約 7 小時，含午餐休息 1 小時)
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    課程可以錄音、錄影、拍攝嗎？ <span style="color: var(--brand-primary);"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    在課程進行中，除非學院與講師同意，不得從事任何形式之拍照、錄影、錄音一經發現請刪除檔案，此規定亦列於各階段課程之報名表上，請各位學員協力配合。
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFaq(this)"
+                    style="padding: 20px 0; border-bottom: 1px solid #eee; cursor: pointer; display: flex; justify-content: space-between;">
+                    付款後可以退費嗎？ <span style="color: var(--brand-primary);"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-a" style="display: none; padding: 20px 0; color: var(--text-sub);">
+                    退費規範：開課日 30 日前(含假日)提出申請者→可全額退費。開課日 30 日內(含第 30 日)提出申請者→恕不退費，但可保留一次上課名額，轉至其他場次(限三個月內使用)。
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Offer Section -->
+    <section id="offer" class="offer-section">
+        <div class="container">
+            <div class="offer-card">
+                <h2>選擇你的場次</h2>
+                <p class="section-desc">給自己兩天，換來一輩子的關係自在</p>
+
+                <!-- 價值堆疊區 -->
+                <div class="value-stack">
+                    <h3 style="text-align: center; color: var(--brand-dark); font-size: 1.5rem; margin-bottom: 30px;">
+                        現在報名，您將獲得總價值 <br><span style="font-size: 2rem; color: var(--brand-primary);">$25,380</span>
+                        的終極組合！
+                    </h3>
+
+                    <div class="stack-item">
+                        <span><i class="fas fa-check-circle stack-icon"></i> 【核心】2 天 36° 關係溝通工作坊</span>
+                        <!-- [New] 顯示原價 vs 早鳥價 -->
+                        <div style="text-align: right;">
+                            <span
+                                style="display: block; font-size: 0.8rem; text-decoration: line-through; color: #999;">原價
+                                NT$ 21,580</span>
+                            <span class="stack-price">早鳥價 NT$ 17,800</span>
+                        </div>
+                    </div>
+                    <div class="stack-item">
+                        <span><i class="fas fa-check-circle stack-icon"></i> 【獨家】DISC 行為特質精準測驗與解析</span>
+                        <span class="stack-price">NT$ 3,800</span>
+                    </div>
+                    <div class="stack-item">
+                        <span><i class="fas fa-check-circle stack-icon"></i> 【社群】一年線上研討會</span>
+                        <span class="stack-price">無價</span>
+                    </div>
+
+                    <div
+                        style="border-top: 1px solid #C4D7CE; margin-top: 25px; padding-top: 25px; text-align: center;">
+                        <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0;">
+                            今日限時早鳥價，<strong style="color: var(--accent-red);">現省高達 NT$ 3,780 ！</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 實體 -->
+                <div style="margin-bottom: 40px;">
+                    <span
+                        style="display: block; font-weight: 700; color: var(--brand-primary); font-size: 1.2rem; margin-bottom: 10px;">
+                        <i class="fas fa-map-marker-alt"></i> 實體課程 (09:00-17:00)
+                    </span>
+                    <a href="https://lifediscoverybs.kaik.io/courses/57" target="_blank" class="btn"
+                        style="width: 100%; max-width: 400px; margin-bottom: 10px; justify-content: space-between;">
+                        <span>12/13(六)-12/14(日) 台中場</span> <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="https://lifediscoverybs.kaik.io/courses/58" target="_blank" class="btn"
+                        style="width: 100%; max-width: 400px; justify-content: space-between;">
+                        <span>12/20(六)-12/21(日) 台北場</span> <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+
+                <!-- 線上 -->
+                <div style="margin-bottom: 40px;">
+                    <span
+                        style="display: block; font-weight: 700; color: var(--brand-primary); font-size: 1.2rem; margin-bottom: 10px;">
+                        <i class="fas fa-laptop-house"></i> 線上課程 (09:00-16:00)
+                    </span>
+                    <a href="https://lifediscoverybs.kaik.io/courses/63" target="_blank" class="btn"
+                        style="background: #F3F4F6; color: var(--text-main); width: 100%; max-width: 400px; margin-bottom: 10px; justify-content: space-between;">
+                        <span>01/10(六)-01/11(日) 線上直播</span> <i class="fas fa-video"></i>
+                    </a>
+                    <a href="https://lifediscoverybs.kaik.io/courses/65" target="_blank" class="btn"
+                        style="background: #F3F4F6; color: var(--text-main); width: 100%; max-width: 400px; justify-content: space-between;">
+                        <span>02/28(六)-03/01(日) 線上直播</span> <i class="fas fa-video"></i>
+                    </a>
+                </div>
+
+                <footer>
+                    收益免責聲明：本課程不具心理諮商、精神治療功能。若有嚴重身心症狀請尋求醫療協助。<br>
+                    Copyright © LDBS 人生探索基地學院
+                </footer>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100;
+            reveals.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+    });
+
+    function toggleFaq(element) {
+        const item = element.parentElement;
+        const answer = item.querySelector('.faq-a');
+        const icon = element.querySelector('span i');
+
+        // Close others
+        const allAnswers = document.querySelectorAll('.faq-a');
+        allAnswers.forEach(a => {
+            if (a !== answer) a.style.display = 'none';
+        });
+        const allIcons = document.querySelectorAll('.faq-q span i');
+        allIcons.forEach(i => {
+            if (i !== icon) i.classList.replace('fa-minus', 'fa-plus');
+        });
+
+        if (answer.style.display === 'block') {
+            answer.style.display = 'none';
+            icon.classList.replace('fa-minus', 'fa-plus');
+        } else {
+            answer.style.display = 'block';
+            icon.classList.replace('fa-plus', 'fa-minus');
+        }
+    }
+</script>

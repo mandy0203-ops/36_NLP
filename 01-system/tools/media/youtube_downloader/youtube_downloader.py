@@ -21,6 +21,8 @@ def download_video(url, output_dir):
         "yt-dlp",
         "-P", output_dir,
         "-o", "%(title)s.%(ext)s",
+        "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[height<=1080][ext=mp4]/best[ext=mp4]",
+        "--merge-output-format", "mp4",
         "--write-subs",
         "--write-auto-subs",
         "--sub-langs", "en,zh-Hant,zh-Hans",
@@ -52,7 +54,7 @@ def main():
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     workspace_root = os.path.abspath(os.path.join(script_dir, "../../../../"))
-    output_dir = os.path.join(workspace_root, "03-outputs", "youtube_downloader", "downloads")
+    output_dir = os.path.join(workspace_root, "03-outputs", "下載存檔")
     
     download_video(args.url, output_dir)
 
