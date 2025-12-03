@@ -27,29 +27,30 @@ echo "💾 提交變更..."
 git add .
 git commit -m "$COMMIT_MSG" || echo "⚠️  沒有新的變更需要提交"
 
-# 設定遠端 repository (如果不存在)
-if [ ! -d "$REMOTE_PATH" ]; then
-    echo "📦 建立遠端 repository..."
-    mkdir -p "$REMOTE_PATH"
-    cd "$REMOTE_PATH"
-    git init --bare
-    cd -
-fi
-
-# 設定 remote (如果不存在)
-if ! git remote | grep -q "usb"; then
-    git remote add usb "$REMOTE_PATH"
-fi
-
 # 推送
 echo ""
-echo "⬆️  推送到外接硬碟..."
-git push usb main 2>/dev/null || git push usb master 2>/dev/null || {
-    # 第一次推送
-    BRANCH=$(git branch --show-current)
-    git push -u usb $BRANCH
-}
+echo "⬆️  推送到 GitHub..."
+git push origin main || echo "⚠️  推送到 GitHub 失敗 (可能是網路問題或權限錯誤)"
+
+# 檢查並推送到外接硬碟
+if [ -d "/Volumes/Samsung-T7" ]; then
+    echo ""
+    echo "⬆️  推送到外接硬碟..."
+    # 設定 remote (如果不存在)
+    if ! git remote | grep -q "usb"; then
+        git remote add usb "$REMOTE_PATH"
+    fi
+    
+    git push usb main 2>/dev/null || git push usb master 2>/dev/null || {
+        # 第一次推送
+        BRANCH=$(git branch --show-current)
+        git push -u usb $BRANCH
+    }
+else
+    echo ""
+    echo "⚠️  未偵測到外接硬碟，跳過 USB 同步"
+fi
 
 echo ""
-echo "✅ 同步完成!"
+echo "✅ 同步程序結束!"
 echo "=========================================="
